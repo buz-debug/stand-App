@@ -949,6 +949,7 @@
     width:100%; background:none; border:1px solid #d8d3c8; color:#6b6558; border-radius:12px;
     padding:13px; font-size:14.5px; font-weight:700; cursor:pointer; font-family:inherit;
   }
+  .modal-cancel-btn.view-ads-btn{ background:#0f8f78; border-color:#0f8f78; color:#fff; }
   .notice-action-btn{
     margin-top:10px; background:var(--flame); color:#1a0d05; border:none; border-radius:10px;
     padding:9px 16px; font-size:14px; font-weight:800; cursor:pointer; font-family:inherit;
@@ -1344,7 +1345,7 @@
         </div>
         <div class="confirm-message" id="course-confirm-message"></div>
         <div class="campaign-modal-actions">
-          <button class="modal-cancel-btn" id="course-confirm-view-ads">車検時特価メニューを確認する</button>
+          <button class="modal-cancel-btn view-ads-btn" id="course-confirm-view-ads">車検時特価メニューを確認する</button>
           <button class="modal-submit confirm-yes-btn" id="course-confirm-yes">決定する</button>
           <button class="modal-cancel-btn" id="course-confirm-cancel">キャンセル</button>
         </div>
@@ -2410,11 +2411,9 @@ function openQuoteModal(course, variant){
   if(cartIds.length){
     var cartRows = cartIds.map(function(id){
       var item = cartItems[id];
-      var uncheckKey = 'cart:' + id;
-      var isChecked = !quoteUncheckedKeys[uncheckKey];
-      return '<label class="quote-row extra' + (isChecked ? '' : ' unchecked') + '" data-cart-row="' + id + '">' +
+      return '<label class="quote-row extra" data-cart-row="' + id + '">' +
         '<span class="quote-check-wrap">' +
-          '<input type="checkbox" class="quote-check" data-amount="' + item.price + '" data-uncheck-key="' + uncheckKey + '"' + (isChecked ? ' checked' : '') + '>' +
+          '<input type="checkbox" class="quote-check" data-amount="' + item.price + '" data-cart-remove="' + id + '" checked>' +
           '<span>' + item.label + '</span>' +
         '</span>' +
         '<span class="price">¥' + item.price.toLocaleString() + '</span>' +
@@ -2428,6 +2427,12 @@ function openQuoteModal(course, variant){
 
   document.getElementById('quote-body').querySelectorAll('.quote-check').forEach(function(cb){
     cb.addEventListener('change', function(){
+      var cartRemoveId = cb.getAttribute('data-cart-remove');
+      if(cartRemoveId && !cb.checked){
+        toggleCartItem(cartRemoveId);
+        openQuoteModal(course);
+        return;
+      }
       cb.closest('.quote-row').classList.toggle('unchecked', !cb.checked);
       var uncheckKey = cb.getAttribute('data-uncheck-key');
       if(uncheckKey){

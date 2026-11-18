@@ -1344,8 +1344,22 @@
         </div>
         <div class="confirm-message" id="course-confirm-message"></div>
         <div class="campaign-modal-actions">
+          <button class="modal-cancel-btn" id="course-confirm-view-ads">車検時特価メニューを確認する</button>
           <button class="modal-submit confirm-yes-btn" id="course-confirm-yes">決定する</button>
           <button class="modal-cancel-btn" id="course-confirm-cancel">キャンセル</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="limited-menu-recall-modal">
+      <div class="modal-sheet light">
+        <div class="modal-head">
+          <h3>車検時限定！特価メニュー</h3>
+          <button class="modal-close" id="close-limited-menu-recall">✕</button>
+        </div>
+        <div class="campaign-detail" id="limited-menu-recall-body"></div>
+        <div class="campaign-modal-actions">
+          <button class="modal-cancel-btn" id="limited-menu-recall-close-btn">閉じる</button>
         </div>
       </div>
     </div>
@@ -1606,6 +1620,8 @@ var LIMITED_MENU_ITEMS = [
 ];
 var cartItems = {};
 var currentGlossyCourses = null;
+var quoteUncheckedKeys = {};
+var confirmFlowCourse = null;
 
 function computeCourseFullTotal(course){
   var base = QUOTE_BASE_ITEMS.reduce(function(sum, it){ return sum + it.amount; }, 0);
@@ -1619,6 +1635,44 @@ function refreshCourseLiveTotals(){
     var el = document.querySelector('[data-course-total="' + c.id + '"]');
     if(el) el.innerHTML = '見積合計 <span class="clt-amount">¥' + computeCourseFullTotal(c).toLocaleString() + '</span>';
   });
+}
+
+function renderLimitedMenuAdsHtml(){
+  return LIMITED_MENU_ITEMS.map(function(item){
+    var inCart = !!cartItems[item.id];
+    return '<div class="ad-banner ' + item.style + '">' +
+      '<div class="ad-tag">車検時限定</div>' +
+      '<div class="ad-title">' + item.label + '</div>' +
+      '<div class="ad-price-row"><span class="ad-price-orig">通常¥' + item.originalPrice.toLocaleString() + '</span><span class="ad-arrow">→</span><span class="ad-price-cur">¥' + item.price.toLocaleString() + '</span><span class="ad-off">' + item.offLabel + '</span></div>' +
+      '<div class="ad-btn-row">' +
+        '<button class="ad-cart-btn' + (inCart ? ' added' : '') + '" data-cart-item="' + item.id + '">' + (inCart ? '✓ カートに追加済み' : 'カートに入れる') + '</button>' +
+        '<button class="ad-detail-btn" data-limited-detail="' + item.id + '">詳しく見る</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+function wireLimitedMenuAdHandlers(containerEl){
+  containerEl.querySelectorAll('[data-cart-item]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      toggleCartItem(btn.getAttribute('data-cart-item'), btn);
+    });
+  });
+  containerEl.querySelectorAll('[data-limited-detail]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      openLimitedMenuLp(btn.getAttribute('data-limited-detail'));
+    });
+  });
+}
+function openLimitedMenuRecallModal(){
+  document.getElementById('limited-menu-recall-body').innerHTML =
+    '<div class="ad-banner-stack native-ad">' + renderLimitedMenuAdsHtml() + '</div>';
+  wireLimitedMenuAdHandlers(document.getElementById('limited-menu-recall-body'));
+  document.getElementById('limited-menu-recall-modal').classList.add('show');
+}
+function closeLimitedMenuRecallModal(){
+  document.getElementById('limited-menu-recall-modal').classList.remove('show');
+  closeCourseConfirmModal();
+  if(confirmFlowCourse) openQuoteModal(confirmFlowCourse);
 }
 
 function toggleCartItem(itemId, btnEl){
@@ -2217,36 +2271,13 @@ function openNoticeActionModal(noticeId){
         '</div>';
       }).join('');
 
-      var limitedMenuHtml = LIMITED_MENU_ITEMS.map(function(item){
-        var inCart = !!cartItems[item.id];
-        return '<div class="ad-banner ' + item.style + '">' +
-          '<div class="ad-tag">車検時限定</div>' +
-          '<div class="ad-title">' + item.label + '</div>' +
-          '<div class="ad-price-row"><span class="ad-price-orig">通常¥' + item.originalPrice.toLocaleString() + '</span><span class="ad-arrow">→</span><span class="ad-price-cur">¥' + item.price.toLocaleString() + '</span><span class="ad-off">' + item.offLabel + '</span></div>' +
-          '<div class="ad-btn-row">' +
-            '<button class="ad-cart-btn' + (inCart ? ' added' : '') + '" data-cart-item="' + item.id + '">' + (inCart ? '✓ カートに追加済み' : 'カートに入れる') + '</button>' +
-            '<button class="ad-detail-btn" data-limited-detail="' + item.id + '">詳しく見る</button>' +
-          '</div>' +
-        '</div>';
-      }).join('');
-
       document.getElementById('notice-action-body').innerHTML =
-        '<div class="campaign-body" style="margin-bottom:14px;">お客様のお車の状態にあわせ、3つの車検メニューをご用意しました、ご希望で選択してください</div>' +
+        '<div class="campaign-body" style="margin-bottom:14px;">お客様のお車の状態にあわせ、3つの車検メニューをご用意しました、ご希望で選択してください。車検時だけの特価メニューもこの機会にぜひご利用ください。</div>' +
         '<div class="course-list">' + courseHtml + '</div>' +
         '<div class="campaign-section-title">車検時限定！特価メニュー</div>' +
-        '<div class="ad-banner-stack native-ad">' + limitedMenuHtml + '</div>';
+        '<div class="ad-banner-stack native-ad">' + renderLimitedMenuAdsHtml() + '</div>';
 
-      document.getElementById('notice-action-body').querySelectorAll('[data-cart-item]').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          toggleCartItem(btn.getAttribute('data-cart-item'), btn);
-        });
-      });
-
-      document.getElementById('notice-action-body').querySelectorAll('[data-limited-detail]').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          openLimitedMenuLp(btn.getAttribute('data-limited-detail'));
-        });
-      });
+      wireLimitedMenuAdHandlers(document.getElementById('notice-action-body'));
 
       document.getElementById('notice-action-body').querySelectorAll('[data-decide-course]').forEach(function(btn){
         btn.addEventListener('click', function(){
@@ -2291,6 +2322,8 @@ function closeNoticeActionModal(){
   document.getElementById('notice-action-modal').classList.remove('show');
   cartItems = {};
   currentGlossyCourses = null;
+  quoteUncheckedKeys = {};
+  confirmFlowCourse = null;
 }
 
 var npsSelectedScore = null;
@@ -2348,13 +2381,15 @@ function openQuoteModal(course, variant){
   if(extra.length){
     var extraRows = extra.map(function(it, idx){
       var checkable = CHECKABLE_LABELS.indexOf(it.label) !== -1;
+      var uncheckKey = 'extra:' + it.label;
+      var isChecked = !quoteUncheckedKeys[uncheckKey];
       var checkboxHtml = checkable
-        ? '<input type="checkbox" class="quote-check" data-amount="' + it.amount + '" checked>'
+        ? '<input type="checkbox" class="quote-check" data-amount="' + it.amount + '" data-uncheck-key="' + uncheckKey + '"' + (isChecked ? ' checked' : '') + '>'
         : '<span class="quote-check-spacer"></span>';
       var detailBtn = PART_DETAILS[it.label]
         ? '<button class="quote-detail-btn" data-part-detail="' + it.label + '">詳細</button>'
         : '';
-      return '<div class="quote-row extra" data-row-idx="' + idx + '">' +
+      return '<div class="quote-row extra' + (isChecked ? '' : ' unchecked') + '" data-row-idx="' + idx + '">' +
         '<label class="quote-check-wrap">' +
           checkboxHtml +
           '<span>' + it.label + '</span>' +
@@ -2375,9 +2410,11 @@ function openQuoteModal(course, variant){
   if(cartIds.length){
     var cartRows = cartIds.map(function(id){
       var item = cartItems[id];
-      return '<label class="quote-row extra" data-cart-row="' + id + '">' +
+      var uncheckKey = 'cart:' + id;
+      var isChecked = !quoteUncheckedKeys[uncheckKey];
+      return '<label class="quote-row extra' + (isChecked ? '' : ' unchecked') + '" data-cart-row="' + id + '">' +
         '<span class="quote-check-wrap">' +
-          '<input type="checkbox" class="quote-check" data-amount="' + item.price + '" checked>' +
+          '<input type="checkbox" class="quote-check" data-amount="' + item.price + '" data-uncheck-key="' + uncheckKey + '"' + (isChecked ? ' checked' : '') + '>' +
           '<span>' + item.label + '</span>' +
         '</span>' +
         '<span class="price">¥' + item.price.toLocaleString() + '</span>' +
@@ -2392,6 +2429,11 @@ function openQuoteModal(course, variant){
   document.getElementById('quote-body').querySelectorAll('.quote-check').forEach(function(cb){
     cb.addEventListener('change', function(){
       cb.closest('.quote-row').classList.toggle('unchecked', !cb.checked);
+      var uncheckKey = cb.getAttribute('data-uncheck-key');
+      if(uncheckKey){
+        if(cb.checked) delete quoteUncheckedKeys[uncheckKey];
+        else quoteUncheckedKeys[uncheckKey] = true;
+      }
       updateQuoteTotal();
     });
   });
@@ -2496,11 +2538,15 @@ function closeUpsellModal(){
 }
 
 function openCourseConfirmModal(course){
+  confirmFlowCourse = course;
   document.getElementById('course-confirm-message').textContent = '今回、「' + course.name + '」で決定しますか？';
   document.getElementById('course-confirm-yes').onclick = function(){
     closeCourseConfirmModal();
     closeNoticeActionModal();
     showToast(course.name + 'に決定しました');
+  };
+  document.getElementById('course-confirm-view-ads').onclick = function(){
+    openLimitedMenuRecallModal();
   };
   document.getElementById('course-confirm-modal').classList.add('show');
 }
@@ -2861,6 +2907,11 @@ document.getElementById('close-course-confirm').addEventListener('click', closeC
 document.getElementById('course-confirm-cancel').addEventListener('click', closeCourseConfirmModal);
 document.getElementById('course-confirm-modal').addEventListener('click', function(e){
   if(e.target === this) closeCourseConfirmModal();
+});
+document.getElementById('close-limited-menu-recall').addEventListener('click', closeLimitedMenuRecallModal);
+document.getElementById('limited-menu-recall-close-btn').addEventListener('click', closeLimitedMenuRecallModal);
+document.getElementById('limited-menu-recall-modal').addEventListener('click', function(e){
+  if(e.target === this) closeLimitedMenuRecallModal();
 });
 document.getElementById('close-campaign').addEventListener('click', closeCampaignModal);
 document.getElementById('campaign-close-btn').addEventListener('click', closeCampaignModal);

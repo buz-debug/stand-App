@@ -800,13 +800,10 @@
   }
   .course-head{ position:relative; z-index:3; display:flex; align-items:center; gap:7px; margin-bottom:7px; }
   .course-medal{ font-size:18.5px; line-height:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.4)); }
-  .course-name{ font-size:16px; font-weight:900; letter-spacing:0.01em; text-shadow:0 1px 3px rgba(0,0,0,0.45); }
-  .course-benefits{ position:relative; z-index:3; list-style:none; margin:0 0 12px; padding:0; }
-  .course-benefits li{ display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; padding:2.5px 0; text-shadow:0 1px 2px rgba(0,0,0,0.4); }
-  .course-benefits .bullet-check{ width:14px; height:14px; font-size:11.5px; background:#fff; color:#0f8f78; flex-shrink:0; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
-  .course-missing-note{
-    position:relative; z-index:3; font-size:11.5px; font-weight:700; opacity:0.8;
-    margin:-5px 0 11px; text-shadow:0 1px 2px rgba(0,0,0,0.3);
+  .course-name{ font-size:20px; font-weight:900; letter-spacing:0.01em; text-shadow:0 1px 3px rgba(0,0,0,0.45); }
+  .course-overview{
+    position:relative; z-index:3; font-size:16px; font-weight:700; line-height:1.55;
+    margin:0 0 13px; text-shadow:0 1px 2px rgba(0,0,0,0.4);
   }
   .course-detail-btn{
     position:relative; z-index:3; width:100%;
@@ -901,14 +898,6 @@
   }
   .lp-hero-title{ position:relative; z-index:1; font-size:19px; font-weight:900; margin:10px 0 10px; text-shadow:0 1px 3px rgba(0,0,0,0.35); }
   .lp-hero .ad-price-row{ position:relative; z-index:1; }
-
-  /* two distinct panels for 追加整備のご提案 */
-  .panel{ border-radius:16px; padding:14px 14px 16px; margin-bottom:16px; }
-  .panel-header{ display:flex; align-items:center; gap:8px; font-size:14.5px; font-weight:800; margin-bottom:12px; letter-spacing:0.02em; }
-  .panel-header svg{ width:16px; height:16px; flex-shrink:0; }
-  .course-select-panel{ background:linear-gradient(180deg, rgba(255,122,41,0.10), rgba(255,122,41,0.02)); border:1px solid rgba(255,122,41,0.3); }
-  .course-select-header{ color:var(--flame); }
-  .course-select-panel .course-list{ margin-top:0; }
 
   .course-live-total{
     position:relative; z-index:3; text-align:left; font-size:13px; font-weight:700; color:#fff;
@@ -1058,6 +1047,7 @@
     box-shadow:0 8px 20px rgba(0,0,0,0.4); opacity:0; transform:translateY(8px); transition:all .25s ease; pointer-events:none; z-index:90;
   }
   .toast.show{ opacity:1; transform:translateY(0); }
+  .toast.above-modal{ bottom:170px; }
 
   .empty{ text-align:center; padding:60px 30px; color:var(--text-lo); }
   .empty svg{ width:40px; height:40px; margin-bottom:10px; opacity:0.5; }
@@ -1523,6 +1513,7 @@ var store = {
           selectLabel:"コースを選択してください",
           courses:[
             { id:"full", name:"しっかり整備コース", medal:"🥇", badgeLabel:"人気No.1", price:"¥18,000", originalPrice:"¥22,000",
+              overview:"早めの部品交換で愛車を快適に乗車できる完全メンテナンスコース",
               benefits:["全16項目を徹底整備","消耗品もまとめて交換","半年保証付き"], style:"course-flame",
               extraItems:[
                 { label:"ロアアームブーツ", amount:15000 },
@@ -1530,12 +1521,14 @@ var store = {
                 { label:"ワイパーゴム", amount:3000 }
               ] },
             { id:"standard", name:"安心おまかせコース", medal:"🥈", badgeLabel:"コスパ良し", price:"¥12,000",
+              overview:"2年後の車検まで安心して乗れる、コストと安全のバランスが取れたメンテナンスコース",
               benefits:["主要項目をバランス良く整備","3ヶ月保証付き"], style:"course-teal",
               extraItems:[
                 { label:"ロアアームブーツ", amount:15000 },
                 { label:"ブレーキパッド", amount:12000 }
               ] },
             { id:"light", name:"お手軽コース", medal:"🥉", badgeLabel:"お手軽", price:"¥6,000",
+              overview:"料金を抑えた最低限のメンテナンスコース",
               benefits:["必要最低限の整備のみ"], style:"course-plain",
               extraItems:[
                 { label:"ロアアームブーツ", amount:15000 }
@@ -1716,6 +1709,7 @@ function refreshQrTimer(){
 
 function showToast(msg){
   toastEl.textContent = msg;
+  toastEl.classList.toggle("above-modal", document.getElementById('notice-action-modal').classList.contains('show'));
   toastEl.classList.add("show");
   clearTimeout(showToast._t);
   showToast._t = setTimeout(function(){ toastEl.classList.remove("show"); }, 1800);
@@ -1860,9 +1854,6 @@ function iconRefresh(){
 }
 function iconTag(){
   return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.59 2.59A2 2 0 0 0 11.17 2H4a2 2 0 0 0-2 2v7.17a2 2 0 0 0 .59 1.41l8.83 8.83a2 2 0 0 0 2.83 0l7.17-7.17a2 2 0 0 0 0-2.83z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/></svg>';
-}
-function iconClipboardCheck(){
-  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="18" rx="2"/><path d="M9 2h6a1 1 0 0 1 1 1v2H8V3a1 1 0 0 1 1-1z"/><path d="M9 13l2 2 4-4"/></svg>';
 }
 function iconCamera(){
   return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.5l1-1.5h7l1 1.5H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.5" r="3.5"/></svg>';
@@ -2187,6 +2178,7 @@ function openNoticeActionModal(noticeId){
   document.getElementById('notice-action-title').textContent = d.title;
   var ctaBtn = document.getElementById('notice-action-cta-btn');
   var closeBtn = document.getElementById('notice-action-close-btn');
+  var actionsWrap = ctaBtn.closest('.campaign-modal-actions');
   closeBtn.onclick = function(){
     closeNoticeActionModal();
     if(d.triggerNps) openNpsModal();
@@ -2214,26 +2206,12 @@ function openNoticeActionModal(noticeId){
         '<div class="course-list flat-list">' + courseHtml + '</div>';
     } else {
       currentGlossyCourses = d.courses;
-      var fullCourseLabels = ((d.courses.find(function(cc){ return cc.id === 'full'; }) || d.courses[0]).extraItems || [])
-        .map(function(it){ return it.label; });
       courseHtml = d.courses.map(function(c){
-        var coveredLabels = (c.extraItems || []).map(function(it){ return it.label; });
-        var missingLabels = fullCourseLabels.filter(function(l){ return coveredLabels.indexOf(l) === -1; });
-        var itemBullets = coveredLabels.map(function(l){
-          return '<li><span class="bullet-check">✓</span>' + l + '交換</li>';
-        }).join('');
-        var benefitBullets = c.benefits.map(function(b){
-          return '<li><span class="bullet-check">✓</span>' + b + '</li>';
-        }).join('');
-        var missingNote = missingLabels.length
-          ? '<div class="course-missing-note">※ ' + missingLabels.join('・') + 'は対象外</div>'
-          : '';
         return '<div class="course-bar ' + c.style + '">' +
           '<div class="course-badge">' + c.badgeLabel + '</div>' +
           '<div class="course-head"><span class="course-medal">' + c.medal + '</span><span class="course-name">' + c.name + '</span></div>' +
+          '<div class="course-overview">' + c.overview + '</div>' +
           '<div class="course-live-total" data-course-total="' + c.id + '">見積合計 <span class="clt-amount">¥' + computeCourseFullTotal(c).toLocaleString() + '</span></div>' +
-          '<ul class="course-benefits">' + itemBullets + benefitBullets + '</ul>' +
-          missingNote +
           '<button class="course-detail-btn" data-course="' + c.id + '">詳細を確認 →</button>' +
           '<button class="course-decide-btn" data-decide-course="' + c.id + '">このコースに決める</button>' +
         '</div>';
@@ -2253,11 +2231,10 @@ function openNoticeActionModal(noticeId){
       }).join('');
 
       document.getElementById('notice-action-body').innerHTML =
-        '<div class="ad-banner-stack native-ad">' + limitedMenuHtml + '</div>' +
-        '<div class="panel course-select-panel">' +
-          '<div class="panel-header course-select-header">' + iconClipboardCheck() + '<span>車検コースを選択して下さい</span></div>' +
-          '<div class="course-list">' + courseHtml + '</div>' +
-        '</div>';
+        '<div class="campaign-body" style="margin-bottom:14px;">お客様のお車の状態にあわせ、3つの車検メニューをご用意しました、ご希望で選択してください</div>' +
+        '<div class="course-list">' + courseHtml + '</div>' +
+        '<div class="campaign-section-title">車検時限定！特価メニュー</div>' +
+        '<div class="ad-banner-stack native-ad">' + limitedMenuHtml + '</div>';
 
       document.getElementById('notice-action-body').querySelectorAll('[data-cart-item]').forEach(function(btn){
         btn.addEventListener('click', function(){
@@ -2280,6 +2257,8 @@ function openNoticeActionModal(noticeId){
     }
     document.getElementById('notice-action-note').textContent = d.note || '';
     ctaBtn.style.display = 'none';
+    closeBtn.style.display = 'none';
+    actionsWrap.style.display = 'none';
     document.getElementById('notice-action-body').querySelectorAll('[data-course]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var course = d.courses.find(function(c){ return c.id === btn.getAttribute('data-course'); });
@@ -2287,7 +2266,9 @@ function openNoticeActionModal(noticeId){
       });
     });
   } else {
+    actionsWrap.style.display = '';
     ctaBtn.style.display = '';
+    closeBtn.style.display = '';
     var itemsHtml = d.items.map(function(it){
       return '<div class="item-row"><span>' + it.label + '</span><span class="price">' + it.price + '</span></div>';
     }).join('');

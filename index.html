@@ -89,17 +89,9 @@
     .phone::before{ display:none; }
   }
 
-  /* status bar */
-  .statusbar{
-    height:52px; flex-shrink:0;
-    display:flex; align-items:flex-end; justify-content:space-between;
-    padding:0 26px 8px 26px;
-    color:var(--text-hi); font-size:14px; font-weight:600;
-  }
-  .statusbar .icons{ display:flex; gap:5px; align-items:center; font-size:12px; }
 
   .screen{
-    flex:1; overflow-y:auto; overflow-x:hidden; overscroll-behavior-y:contain; -ms-overflow-style:none; scrollbar-width:none; padding-bottom:96px;
+    flex:1; overflow-y:auto; overflow-x:hidden; overscroll-behavior-y:contain; -ms-overflow-style:none; scrollbar-width:none; padding:0 8px 96px;
     background:
       radial-gradient(circle at 10% -6%, rgba(255,184,0,0.14), transparent 36%),
       radial-gradient(circle at 100% 18%, rgba(255,90,60,0.10), transparent 40%),
@@ -1073,13 +1065,6 @@
 
 <div class="stage">
   <div class="phone">
-    <div class="statusbar">
-      <span class="num">9:41</span>
-      <div class="icons">
-        <span class="num">5G</span>
-        <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><rect x="0.5" y="0.5" width="14" height="10" rx="2" stroke="#f5f7fa"/><rect x="1.5" y="1.5" width="10" height="8" rx="1" fill="#f5f7fa"/></svg>
-      </div>
-    </div>
 
     <div class="screen" id="screen"></div>
 

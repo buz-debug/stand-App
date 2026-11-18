@@ -335,11 +335,11 @@
   .weather-day-label{ font-size:12.5px; font-weight:800; color:var(--text-mid); background:var(--navy-3); padding:3px 10px; border-radius:10px; flex-shrink:0; }
   .weather-day-temp{ display:flex; align-items:center; gap:6px; font-size:16.5px; font-weight:900; color:var(--text-hi); }
   .wd-ico{ font-size:18.5px; }
-  .weather-day-detail{ font-size:14px; color:var(--text-mid); line-height:1.75; font-weight:500; }
+  .weather-day-detail{ font-size:16.5px; color:var(--text-mid); line-height:1.75; font-weight:500; }
 
   /* ---- 星座占いの詳細モーダル ---- */
   .fortune-stars{ font-size:23px; color:var(--teal); text-align:center; letter-spacing:3px; margin-bottom:14px; }
-  .fortune-detail-text{ font-size:14.5px; color:var(--text-mid); line-height:1.8; font-weight:500; margin-bottom:16px; }
+  .fortune-detail-text{ font-size:16.5px; color:var(--text-mid); line-height:1.8; font-weight:500; margin-bottom:16px; }
   .fortune-lucky-row{ display:flex; gap:10px; }
   .fortune-lucky-chip{ flex:1; background:var(--navy-2); border:1px solid var(--navy-3); border-radius:12px; padding:10px 12px; text-align:center; }
   .fl-label{ display:block; font-size:12px; font-weight:800; color:var(--text-lo); margin-bottom:4px; }
@@ -578,7 +578,7 @@
   .modal-sheet.light .notice-date{ color:#7a7364; }
   .notice-title{ color:var(--text-hi); font-size:16.5px; font-weight:700; margin-bottom:3px; }
   .modal-sheet.light .notice-title{ color:#232323; }
-  .notice-body{ color:var(--text-mid); font-size:15.5px; line-height:1.6; }
+  .notice-body{ color:var(--text-mid); font-size:16.5px; line-height:1.6; }
   .modal-sheet.light .notice-body{ color:#3a352c; font-weight:500; }
 
   /* campaign detail modal */
@@ -622,7 +622,7 @@
   }
 
   /* 「いっしょにいかがですか」アップセルLPモーダル */
-  .upsell-sheet{
+  .modal-sheet.upsell-sheet{
     position:relative; overflow:hidden;
     background:linear-gradient(160deg, #ffb35c 0%, #ff5b1f 50%, #c93d0a 100%);
     border-top:none; color:#fff;
@@ -724,7 +724,7 @@
   }
 
   /* 整備見積書 (quote) — sleek dark invoice styling */
-  .quote-sheet{
+  .modal-sheet.quote-sheet{
     background:linear-gradient(180deg, #131d2c 0%, #0c1420 100%);
     border-top:2px solid #e0a94f;
   }

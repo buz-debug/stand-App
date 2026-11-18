@@ -209,7 +209,7 @@
   .modal-backdrop.center{ align-items:center; justify-content:center; padding:20px; }
   .charge-sheet{
     position:relative;
-    width:100%; max-width:300px; height:50%; max-height:400px;
+    width:100%; max-width:300px; height:65%; max-height:480px;
     background:linear-gradient(165deg, var(--navy-1) 0%, var(--navy-2) 100%);
     border:1px solid var(--navy-3);
     border-radius:28px;
@@ -432,8 +432,8 @@
   .quest-detail-body{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:6px 0 24px; text-align:center; }
   .quest-detail-ico{ width:58px; height:58px; border-radius:18px; background:var(--flame-soft); color:var(--flame); display:flex; align-items:center; justify-content:center; }
   .quest-detail-ico svg{ width:28px; height:28px; }
-  .quest-detail-desc{ font-size:14.5px; color:var(--text-mid); font-weight:600; }
-  .quest-detail-reward{ font-size:25px; font-weight:900; color:var(--flame); font-variant-numeric:tabular-nums; }
+  .quest-detail-desc{ font-size:16.5px; color:var(--text-mid); font-weight:600; }
+  .quest-detail-reward{ font-size:26px; font-weight:900; color:var(--flame); font-variant-numeric:tabular-nums; }
   .quest-row{ width:100%; font-family:inherit; cursor:pointer; }
 
   /* points row */
@@ -556,6 +556,7 @@
   /* notice list modal */
   .modal-sheet.tall{ max-height:78vh; max-height:78dvh; display:flex; flex-direction:column; padding-bottom:calc(25px + env(safe-area-inset-bottom,0px)); }
   .modal-sheet.full{ max-height:92vh; max-height:92dvh; display:flex; flex-direction:column; padding-bottom:calc(25px + env(safe-area-inset-bottom,0px)); }
+  .modal-sheet.full-screen{ max-height:100vh; max-height:100dvh; }
   .modal-sheet.light{ background:#ffffff; border-top:1px solid #e7e3da; }
   .modal-sheet.light .modal-head h3{ color:#1c1c1c; }
   .modal-sheet.light .modal-close{ background:#f0eee8; color:#6b6558; }
@@ -566,25 +567,25 @@
   .notice-unread-dot{ width:7px; height:7px; border-radius:50%; background:var(--alert); flex-shrink:0; }
   .notice-item:last-child{ border-bottom:none; }
   .notice-item-top{ display:flex; align-items:center; gap:8px; margin-bottom:5px; }
-  .notice-tag{ font-size:11.5px; font-weight:800; padding:3px 8px; border-radius:6px; letter-spacing:0.03em; }
+  .notice-tag{ font-size:13px; font-weight:800; padding:3px 8px; border-radius:6px; letter-spacing:0.03em; }
   .notice-tag.info{ background:rgba(255,184,0,0.16); color:var(--teal); }
   .notice-tag.campaign{ background:rgba(255,90,60,0.16); color:var(--flame); }
   .notice-tag.important{ background:rgba(255,86,86,0.16); color:#ff7d7d; }
   .modal-sheet.light .notice-tag.info{ background:#dcf7f1; color:#0f8f78; }
   .modal-sheet.light .notice-tag.campaign{ background:#ffe7d6; color:#c95410; }
   .modal-sheet.light .notice-tag.important{ background:#ffe1e1; color:#c62f2f; }
-  .notice-date{ font-size:12px; color:var(--text-lo); }
+  .notice-date{ font-size:13.5px; color:var(--text-lo); }
   .modal-sheet.light .notice-date{ color:#7a7364; }
-  .notice-title{ color:var(--text-hi); font-size:14.5px; font-weight:700; margin-bottom:3px; }
+  .notice-title{ color:var(--text-hi); font-size:16.5px; font-weight:700; margin-bottom:3px; }
   .modal-sheet.light .notice-title{ color:#232323; }
-  .notice-body{ color:var(--text-mid); font-size:13.5px; line-height:1.6; }
+  .notice-body{ color:var(--text-mid); font-size:15.5px; line-height:1.6; }
   .modal-sheet.light .notice-body{ color:#3a352c; font-weight:500; }
 
   /* campaign detail modal */
   .campaign-detail{ overflow-y:auto; margin:0 -14px; padding:0 14px 4px; scrollbar-width:none; }
   .campaign-detail::-webkit-scrollbar{ display:none; }
-  .campaign-subtitle{ color:var(--flame-dark); font-size:14.5px; font-weight:800; margin-bottom:10px; }
-  .campaign-body{ color:#3a352c; font-size:14.5px; line-height:1.75; }
+  .campaign-subtitle{ color:var(--flame-dark); font-size:16.5px; font-weight:800; margin-bottom:10px; }
+  .campaign-body{ color:#3a352c; font-size:16.5px; line-height:1.75; }
 
   /* NPS survey */
   .nps-question{ color:#2b2622; font-size:14.5px; font-weight:700; line-height:1.6; margin-top:14px; margin-bottom:14px; }
@@ -651,7 +652,7 @@
   .upsell-sheet .modal-cancel-btn{ border-color:rgba(255,255,255,0.5); color:#fff; }
 
   .campaign-bullets{ list-style:none; margin:14px 0 4px; padding:0; }
-  .campaign-section-title{ font-size:16.5px; font-weight:900; color:#2b2622; letter-spacing:0.02em; margin:24px 0 8px; padding-left:10px; border-left:4px solid var(--flame); line-height:1.35; }
+  .campaign-section-title{ font-size:18px; font-weight:900; color:#2b2622; letter-spacing:0.02em; margin:24px 0 8px; padding-left:10px; border-left:4px solid var(--flame); line-height:1.35; }
   .campaign-detail > .campaign-section-title:first-child{ margin-top:6px; }
   .part-photo-wrap{ margin-top:8px; }
   .part-photo-frame{ width:100%; aspect-ratio:4/3; border-radius:12px; overflow:hidden; background:#e3ddd0; }
@@ -949,7 +950,7 @@
   }
   .quote-sheet.flat .modal-cancel-btn{ border-color:#d8d3c8; color:#6b6558; }
   .notice-action-note{ font-size:13px; color:#6b6558; text-align:center; margin-top:10px; }
-  .campaign-bullets li{ display:flex; align-items:flex-start; gap:9px; padding:9px 0; border-bottom:1px solid #ece8df; font-size:14px; color:#3a352c; line-height:1.5; }
+  .campaign-bullets li{ display:flex; align-items:flex-start; gap:9px; padding:9px 0; border-bottom:1px solid #ece8df; font-size:16px; color:#3a352c; line-height:1.5; }
   .campaign-bullets li:last-child{ border-bottom:none; }
   .bullet-check{ flex-shrink:0; width:18px; height:18px; border-radius:50%; background:#dcf7f1; color:#0f8f78; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; margin-top:1px; }
   .campaign-modal-actions{ display:flex; flex-direction:column; gap:10px; padding-top:16px; }
@@ -1187,7 +1188,7 @@
     </div>
 
     <div class="modal-backdrop" id="maintenance-pack-modal">
-      <div class="modal-sheet tall light">
+      <div class="modal-sheet full full-screen light">
         <div class="modal-head">
           <h3>メンテナンスパックとは(無料)</h3>
           <button class="modal-close" id="close-maintenance-pack">✕</button>
@@ -1211,7 +1212,7 @@
     </div>
 
     <div class="modal-backdrop" id="maintenance-benefits-modal">
-      <div class="modal-sheet tall light">
+      <div class="modal-sheet full full-screen light">
         <div class="modal-head">
           <h3>メンテナンスパックでは以下のサービスをご利用できます</h3>
           <button class="modal-close" id="close-maintenance-benefits">✕</button>
